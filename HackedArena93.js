@@ -289,3 +289,32 @@ function updateStats(){
 };
 
 getPseudo();
+
+socket._callbacks.$kill.pop()
+socket.on('kill', function(data) {  
+  
+  updateStats();
+  console.log(data);
+  killed=data[0];
+  if(players[killed].nick==="guest") {name1=players[killed].id} else {name1=players[killed].nick};
+  killer=data[1];
+  if(players[killer].nick==="guest") {name2=players[killer].id} else {name2=players[killer].nick};
+
+  if (killed!=socket.id) {
+    removePlayer(killed);
+  };
+
+  if (killed==socket.id) {
+    $('#me').html(name2+'<br> killed u.')
+    $('canvas').hide();
+    return
+  };
+
+  if (killer==socket.id) {
+    $('#me').html('u killed <br>'+name1+'.')
+    return
+  };
+
+  $('#me').html(name1+'<br> was killed by <br>'+name2+'.')
+
+});
