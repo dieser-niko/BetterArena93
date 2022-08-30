@@ -70,7 +70,7 @@ setInterval(function() {
   };
   if (playercheck !== Object.keys(players).length) { playercheck = Object.keys(players).length, updateStats()}
 }, 1000 / 60);
-document.children[0].style.background = '#c0c0c0'
+document.children[0].style.background = '#c0c0c0';
 
 
 function updateStats(){
@@ -99,5 +99,6 @@ function updateStats(){
   $('#stats').show();
 
 
-}
+};
 
+getPseudo();
