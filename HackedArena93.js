@@ -290,7 +290,7 @@ function updateStats(){
 
 getPseudo();
 
-socket._callbacks.$kill.pop()
+socket._callbacks.$kill.pop();
 socket.on('kill', function(data) {  
   
   updateStats();
