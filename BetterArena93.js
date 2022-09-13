@@ -70,4 +70,64 @@ setInterval(function() {
   };
   if (playercheck !== Object.keys(players).length) { playercheck = Object.keys(players).length, updateStats()}
 }, 1000 / 60);
-document.children[0].style.background = '#c0c0c0'
+document.children[0].style.background = '#c0c0c0';
+
+
+function updateStats(){
+
+  //console.log(players);
+
+  var arr=[];
+  var i=0;
+  Object.keys(players).sort().forEach(function(key) {
+    arr[i]= players[key];i=i+1;
+  });
+  arr.sort(function (a, b) {
+      return a.score - b.score;
+  });
+  str="";
+  for (var i = arr.length - 1; i >= 0; i--) {
+    c=" ";
+    if(arr[i].nick==="guest") {name=arr[i].id} else {name=arr[i].nick};    
+    if (arr[i].id==socket.id) {name="You";};
+    if (i==arr.length - 1) {c=" 👑"};
+    str=str+name+c+": "+arr[i].score+"<br>";
+  };
+
+  //console.log(arr);
+  $('#stats').html(str);
+  $('#stats').show();
+
+
+};
+
+getPseudo();
+
+socket._callbacks.$kill.pop();
+socket.on('kill', function(data) {  
+  
+  updateStats();
+  console.log(data);
+  killed=data[0];
+  if(players[killed].nick==="guest") {name1=players[killed].id} else {name1=players[killed].nick};
+  killer=data[1];
+  if(players[killer].nick==="guest") {name2=players[killer].id} else {name2=players[killer].nick};
+
+  if (killed!=socket.id) {
+    removePlayer(killed);
+  };
+
+  if (killed==socket.id) {
+    $('#me').html(name2+'<br> killed u.')
+    $('canvas').hide();
+    return
+  };
+
+  if (killer==socket.id) {
+    $('#me').html('u killed <br>'+name1+'.')
+    return
+  };
+
+  $('#me').html(name1+'<br> was killed by <br>'+name2+'.')
+
+});
